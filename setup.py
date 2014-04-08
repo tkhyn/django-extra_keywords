@@ -16,6 +16,16 @@ install_requires = (
 
 # imports __version__ variable
 exec(open('django_extra_keywords/version.py').read())
+dev_status = __version_info__[3]
+
+if dev_status == 'alpha' and not __version_info__[4]:
+    dev_status = 'pre'
+
+DEV_STATUS = {'pre': '2 - Pre-Alpha',
+              'alpha': '3 - Alpha',
+              'beta': '4 - Beta',
+              'rc': '5 - Production/Stable',
+              'final': '5 - Production/Stable'}
 
 # setup function parameters
 data = dict(
@@ -24,13 +34,13 @@ data = dict(
     description='Extra gettext keywords handling in Django',
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
-    url='http://open.ksytek.com/django/extra_keywords',  # TODO: check url
+    url='http://bitbucket.org/tkhyn/django-extra_keywords',
     keywords=['i18n', 'translation', 'gettext', 'keywords'],
     classifiers=[
         'Programming Language :: Python',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Development Status :: 4 - Beta',
+        'Development Status :: %s' % DEV_STATUS[dev_status],
         'Intended Audience :: Developers',
         'Framework :: Django',
         'Environment :: Plugins',
