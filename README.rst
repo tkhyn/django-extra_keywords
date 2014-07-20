@@ -1,6 +1,8 @@
 Extra keywords for Django
 =========================
 
+|copyright| 2014 Thomas Khyn
+
 About
 -----
 
@@ -29,3 +31,5 @@ Once it is installed, you may for example run::
 
 so that ``_l('to translate')`` is recognised and 'to translate' is
 added to the locale dictionnary.
+
+.. |copyright| unicode:: 0xA9

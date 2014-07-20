@@ -24,7 +24,7 @@ if dev_status == 'alpha' and not __version_info__[4]:
 DEV_STATUS = {'pre': '2 - Pre-Alpha',
               'alpha': '3 - Alpha',
               'beta': '4 - Beta',
-              'rc': '5 - Production/Stable',
+              'rc': '4 - Beta',
               'final': '5 - Production/Stable'}
 
 # setup function parameters
@@ -34,7 +34,7 @@ data = dict(
     description='Extra gettext keywords handling in Django',
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
-    url='http://bitbucket.org/tkhyn/django-extra_keywords',
+    url='https://bitbucket.org/tkhyn/django-extra_keywords',
     keywords=['i18n', 'translation', 'gettext', 'keywords'],
     classifiers=[
         'Programming Language :: Python',
@@ -79,7 +79,7 @@ def read(filename):
 
 data.update({
     'packages': packages,
-    'long_description': read('README.txt')  # use reST in  README.txt !
+    'long_description': read('README.rst')
 })
 
 setup(**data)
