@@ -16,6 +16,7 @@ from optparse import make_option
 
 from django.core.management.commands import makemessages as makemessages_core
 from django.core.management.base import CommandError
+from django.conf import settings
 
 try:
     # django >= 1.6
@@ -40,7 +41,8 @@ class Command(makemessages_core.Command):
 
     def handle_noargs(self, **options):
 
-        extra_keywords = options.pop('extra_keywords')
+        extra_keywords = set(options.pop('extra_keywords'))
+        extra_keywords.update(getattr(settings, 'GETTEXT_EXTRA_KEYWORDS', ()))
 
         if popen_wrapper_core:
             def popen_wrapper_xtra_kw(args, os_err_exc_type=CommandError):
