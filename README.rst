@@ -36,9 +36,9 @@ As straightforward as it can be, using ``pip``::
 Usage
 -----
 
-Simply add ``'extra_keywords'`` to your INSTALLED_APPS after having installed
-the package with the method of your choice. Note that it does not make any
-sense to have this application installed in production.
+Simply add ``'extra_keywords'`` to your ``INSTALLED_APPS``. Note that it does
+not make any sense to have this application installed in production and that it
+may only used in a development settings module.
 
 Then, you can:
 
@@ -61,14 +61,16 @@ When using aliases for one-argument functions (``ugettext``, ``ugettext_lazy``
 arguments functions, you need to specify them, according to the following
 table:
 
-+---------------+----------------+
-| Function type | Keyword format |
-+===============+================+
-| gettext*      | X              |
-| ngettext*     | X:1,2          |
-| pgettext*     | X:1c,2         |
-| npgettext*    | X:1c,2,3       |
-+---------------+----------------+
+.. table::
+
+   =============  ==============
+   Function type  Keyword format
+   =============  ==============
+   gettext\*      X
+   ngettext\*     X:1,2
+   pgettext\*     X:1c,2
+   npgettext\*    X:1c,2,3
+   =============  ==============
 
 Example: if ``_n`` is an alias for ``ungettext``, the keyword to use in
 ``GETTEXT_EXTRA_KEYWORDS`` or the ``makemessages`` command is ``'_n:1,2'``.
