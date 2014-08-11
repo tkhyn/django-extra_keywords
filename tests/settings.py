@@ -9,7 +9,7 @@ MEDIA_URL = '/media/'
 
 DATABASES = {
     'default': {
-        'NAME': 'actrack',
+        'NAME': 'extra_keywords',
         'ENGINE': 'django.db.backends.sqlite3',
     }
 }
