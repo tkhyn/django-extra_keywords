@@ -46,7 +46,7 @@ setup(
     ],
     packages=find_packages(exclude=('tests',)),
     install_requires=(
-      'django>=1.6',
+      'django>=1.4',
     ),
     zip_safe=True,
 )

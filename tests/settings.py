@@ -16,7 +16,7 @@ DATABASES = {
 
 INSTALLED_APPS = ('django_nose',
                   'extra_keywords',
-                  'testapp',)
+                  'tests.testapp',)
 
 MIDDLEWARE_CLASSES = ()
 
