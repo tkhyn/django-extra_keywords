@@ -1,18 +1,12 @@
 """
-Generic distutils script
+Django extra keywords
+Use extra keywords for django's makemessage management command
 (c) 2014 Thomas Khyn
 MIT license (see LICENSE.txt)
 """
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 import os
-
-INC_PACKAGES = 'django_extra_keywords',  # string or tuple of strings
-EXC_PACKAGES = ()  # tuple of strings
-
-install_requires = (
-    'Django>=1.6',
-)
 
 # imports __version__ variable
 exec(open('extra_keywords/version.py').read())
@@ -28,16 +22,18 @@ DEV_STATUS = {'pre': '2 - Pre-Alpha',
               'final': '5 - Production/Stable'}
 
 # setup function parameters
-data = dict(
+setup(
     name='django-extra_keywords',
     version=__version__,
     description='Extra gettext keywords handling in Django',
+    long_description=open(os.path.join('README.rst')).read(),
     author='Thomas Khyn',
     author_email='thomas@ksytek.com',
     url='https://bitbucket.org/tkhyn/django-extra_keywords',
     keywords=['i18n', 'translation', 'gettext', 'keywords'],
     classifiers=[
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Development Status :: %s' % DEV_STATUS[dev_status],
@@ -47,39 +43,10 @@ data = dict(
         'Topic :: Software Development :: Internationalization',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing :: Linguistic'
-    ]
+    ],
+    packages=find_packages(exclude=('tests',)),
+    install_requires=(
+      'django>=1.6',
+    ),
+    zip_safe=True,
 )
-
-
-# packages parsing from root packages, without importing sub-packages
-root_path = os.path.dirname(__file__)
-if isinstance(INC_PACKAGES, basestring):
-    INC_PACKAGES = (INC_PACKAGES,)
-
-packages = []
-excludes = list(EXC_PACKAGES)
-for pkg in INC_PACKAGES:
-    pkg_root = os.path.join(root_path, pkg)
-    for dirpath, dirs, files in os.walk(pkg_root):
-        rel_path = os.path.relpath(dirpath, pkg_root)
-        pkg_name = pkg
-        if (rel_path != '.'):
-            pkg_name += '.' + rel_path.replace(os.sep, '.')
-        for x in excludes:
-            if x in pkg_name:
-                continue
-        if '__init__.py' in files:
-            packages.append(pkg_name)
-        elif dirs:  # stops package parsing if no __init__.py file
-            excludes.append(pkg_name)
-
-
-def read(filename):
-    return open(os.path.join(root_path, filename)).read()
-
-data.update({
-    'packages': packages,
-    'long_description': read('README.rst')
-})
-
-setup(**data)
