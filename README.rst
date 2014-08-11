@@ -27,7 +27,7 @@ sense to have this application installed in production.
 
 Once it is installed, you may for example run::
 
-   manage.py makemessages [...] --extra-keywords=_l [...]
+   manage.py makemessages [...] --extra-keyword=_l [...]
 
 so that ``_l('to translate')`` is recognised and 'to translate' is
 added to the locale dictionnary.

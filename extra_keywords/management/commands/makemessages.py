@@ -33,7 +33,7 @@ except ImportError:
 class Command(makemessages_core.Command):
 
     option_list = makemessages_core.Command.option_list + (
-        make_option('--extra-keywords', dest='extra_keywords', action='append',
+        make_option('--extra-keyword', dest='extra_keywords', action='append',
             default=[],
             help='If you use import aliases for ugettext and its variations, '
                  'you can specify them here to make sure that xgettext will '
