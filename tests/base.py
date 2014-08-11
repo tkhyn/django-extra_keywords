@@ -1,6 +1,7 @@
 import os
 import shutil
 
+import django
 from django.utils import unittest
 from django.core.management import call_command
 
@@ -19,7 +20,10 @@ class TestCase(unittest.TestCase):
         shutil.rmtree(self.locale_dir)
 
     def call_command(self, extra_kw=()):
-        call_command('makemessages', locale=['fr'], extra_keywords=extra_kw)
+        loc = 'fr'
+        if django.VERSION >= (1, 6):
+            loc = [loc]
+        call_command('makemessages', locale=loc, extra_keywords=extra_kw)
 
     @property
     def po_ctnt(self):
