@@ -2,8 +2,8 @@
 There were 2 options to add arguments to xgettext
 1. add arguments to the list built in process function, this would require
    copying the function and adding 3 lines to it ...
-2. add arguments afterwards, when popen_wrapper is called, by
-   monkey-patching the popen_wrapper function
+2. add arguments afterwards, when _popen / popen_wrapper is called, by
+   monkey-patching the _popen / popen_wrapper function
 
 Given the size of this file, you have probably guessed that it's the
 2nd solution that is used here
@@ -30,6 +30,16 @@ except ImportError:
     popen_wrapper_core = None
 
 
+def _process_args(args, extra_keywords):
+    if args and args[0] == 'xgettext':
+        for i, a in enumerate(args):
+            if '--keyword=' in a:
+                to_ins = ['--keyword=%s' % kw for kw in extra_keywords]
+                args[i:i] = to_ins
+                break
+    return args
+
+
 class Command(makemessages_core.Command):
 
     option_list = makemessages_core.Command.option_list + (
@@ -45,23 +55,16 @@ class Command(makemessages_core.Command):
         extra_keywords.update(getattr(settings, 'GETTEXT_EXTRA_KEYWORDS', ()))
 
         if popen_wrapper_core:
+            # django >= 1.6
             def popen_wrapper_xtra_kw(args, os_err_exc_type=CommandError):
-                if args and args[0] == 'xgettext':
-                    for kw in extra_keywords:
-                        args.append('--keyword=%s' % kw)
-                return popen_wrapper_core(args, os_err_exc_type)
-
+                return popen_wrapper_core(_process_args(args, extra_keywords),
+                                          os_err_exc_type)
             makemessages_core.popen_wrapper = popen_wrapper_xtra_kw
         else:
+            # django < 1.6
             def _popen_xtra_kw(cmd):
-                to_insert = ''
-                if cmd.startswith('xgettext') and '--keyword' in cmd:
-                    for kw in  extra_keywords:
-                        to_insert += ' --keyword=%s' % kw
-                    if to_insert:
-                        i = cmd.find(' ', cmd.rfind('--keyword'))
-                        cmd = cmd[:i] + to_insert + cmd[i:]
-                return _popen_core(cmd)
+                return _popen_core(' '.join(_process_args(cmd.split(' '),
+                                                          extra_keywords)))
             makemessages_core._popen = _popen_xtra_kw
 
         try:
@@ -69,6 +72,8 @@ class Command(makemessages_core.Command):
         finally:
             # restore popen_wrapper or _popen
             if popen_wrapper_core:
+                # django >= 1.6
                 makemessages_core.popen_wrapper = popen_wrapper_core
             else:
+                # django < 1.6
                 makemessages_core._popen = _popen_core
