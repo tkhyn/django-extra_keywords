@@ -1,7 +1,7 @@
 Extra keywords for Django
 =========================
 
-|copyright| 2014 Thomas Khyn
+|copyright| 2014-2015 Thomas Khyn
 
 Tested with Django 1.4 to 1.8 and all supported versions of Python.
 
