@@ -3,6 +3,7 @@ syntax: glob
 # buildout
 bin
 .installed.cfg
+.mr.developer.cfg
 
 # setup
 dist
