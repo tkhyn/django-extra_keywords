@@ -2,17 +2,22 @@ django-extra_keywords - changes
 ===============================
 
 
-v1.1 dev
---------
+v1.2a (dev)
+-----------
+
+Added:
+- Django 1.8 compatibility
+
+
+v1.1 and 1.1.1 (12-08-2014)
+---------------------------
 
 Bugfixes:
-
 - Issue with package name
 - Command line option ``--extra-keywords`` loses its 's'
 
-Features:
-
-- Compatible with Django 1.4 to 1.7
+Added:
+- Django 1.4 to 1.7 compatibility
 - Can now use settings.GETTEXT_EXTRA_KEYWORDS instead of command line
 
 

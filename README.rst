@@ -3,7 +3,7 @@ Extra keywords for Django
 
 |copyright| 2014 Thomas Khyn
 
-Tested with Django 1.4 to 1.7 and all supported versions of Python.
+Tested with Django 1.4 to 1.8 and all supported versions of Python.
 
 About
 -----
@@ -32,15 +32,15 @@ As straightforward as it can be, using ``pip``::
 
    pip install django-extra_keywords
 
+Then you will need to add ``'extra_keywords'`` to your ``INSTALLED_APPS``.
+Note that it does not make any sense to have this application installed in
+production and that it may only used in a development settings module.
+
 
 Usage
 -----
 
-Simply add ``'extra_keywords'`` to your ``INSTALLED_APPS``. Note that it does
-not make any sense to have this application installed in production and that it
-may only used in a development settings module.
-
-Then, you can:
+Once installed, you can:
 
 - either define ``GETTEXT_EXTRA_KEYWORDS`` in your ``settings`` module as a
   tuple or list containing the keywords you would like to add::
