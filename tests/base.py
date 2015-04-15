@@ -17,7 +17,10 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.locale_dir = os.path.join(os.path.dirname(__file__), 'locale')
-        os.mkdir(self.locale_dir)
+        try:
+            os.mkdir(self.locale_dir)
+        except OSError:
+            pass
         settings.GETTEXT_EXTRA_KEYWORDS = ()
 
     def tearDown(self):

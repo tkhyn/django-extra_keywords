@@ -14,6 +14,7 @@ MIT license (see LICENSE.txt)
 
 from optparse import make_option
 
+import django
 from django.core.management.commands import makemessages as makemessages_core
 from django.core.management.base import CommandError
 from django.conf import settings
@@ -40,16 +41,26 @@ def _process_args(args, extra_keywords):
     return args
 
 
+_arg_kwargs = dict(
+    dest='extra_keywords',
+    action='append', nargs='+', type=int,
+    help='If you use import aliases for ugettext and its variations, you can '
+         'specify them here to make sure that xgettext will find your '
+         'translatable strings.'
+)
+
+
 class Command(makemessages_core.Command):
 
-    option_list = makemessages_core.Command.option_list + (
-        make_option('--extra-keyword', dest='extra_keywords', action='append',
-            default=[],
-            help='If you use import aliases for ugettext and its variations, '
-                 'you can specify them here to make sure that xgettext will '
-                 'find your translatable strings.'),)
+    if django.VERSION >= (1, 8):
+        def add_arguments(self, parser):
+            super(Command, self).add_arguments(parser)
+            parser.add_argument('--extra-keywords', **_arg_kwargs)
+    else:
+        option_list = makemessages_core.Command.option_list + (
+            make_option('--extra-keyword', **_arg_kwargs),)
 
-    def handle_noargs(self, **options):
+    def handle(self, *args, **options):
 
         extra_keywords = set(options.pop('extra_keywords'))
         extra_keywords.update(getattr(settings, 'GETTEXT_EXTRA_KEYWORDS', ()))
@@ -68,7 +79,11 @@ class Command(makemessages_core.Command):
             makemessages_core._popen = _popen_xtra_kw
 
         try:
-            super(Command, self).handle_noargs(**options)
+            try:
+                # django < 1.8
+                super(Command, self).handle_noargs(**options)
+            except AttributeError:
+                super(Command, self).handle(**options)
         finally:
             # restore popen_wrapper or _popen
             if popen_wrapper_core:
@@ -77,3 +92,7 @@ class Command(makemessages_core.Command):
             else:
                 # django < 1.6
                 makemessages_core._popen = _popen_core
+
+    def handle_noargs(self, **options):
+        # for django < 1.8
+        return self.handle(**options)
